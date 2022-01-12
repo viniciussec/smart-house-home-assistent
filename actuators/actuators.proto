@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+message RequestAC {
+    type string = 1;
+    id int32 = 2;
+    temperature float32 = 3;
+}
+
+message RequestSprinkler {
+    type string = 1;
+    id int32 = 2;
+    active bool = 3;
+}
+
+message RequestLightBulb {
+    type string = 1;
+    id int32 = 2;
+    active bool = 3;
+}
+
+message Response {
+    success bool = 1;
+    error_message = 2;
+}
