@@ -1,24 +1,31 @@
 syntax = "proto3";
 
+service ActuatorService {
+    rpc controlAC (RequestAC) returns (Response) {}
+    rpc controlLightbulb (RequestLightBulb) returns (Response) {}
+    rpc controlSprinkler (RequestSprinkler) returns (Response) {}
+}
+
 message RequestAC {
-    type string = 1;
-    id int32 = 2;
-    temperature float32 = 3;
+    string type  = 1;
+    int32 id  = 2;
+    float temperature  = 3;
+    bool active  = 4;
 }
 
 message RequestSprinkler {
-    type string = 1;
-    id int32 = 2;
-    active bool = 3;
+    string type  = 1;
+    int32 id  = 2;
+    bool active  = 3;
 }
 
 message RequestLightBulb {
-    type string = 1;
-    id int32 = 2;
-    active bool = 3;
+    string type  = 1;
+    int32 id  = 2;
+    bool active  = 3;
 }
 
 message Response {
-    success bool = 1;
-    error_message = 2;
+    bool success  = 1;
+    string error_message  = 2;
 }

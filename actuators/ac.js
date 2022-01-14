@@ -1,15 +1,32 @@
 const grpc = require("grpc");
-const notesProto = grpc.load("actuators.proto");
+const protoLoader = require('@grpc/proto-loader')
+const path = require('path');
 
-const notes = [
-  { id: "1", title: "Note 1", content: "Content 1" },
-  { id: "2", title: "Note 2", content: "Content 2" },
-];
+const protoObject = protoLoader.loadSync(path.resolve(__dirname, './actuators.proto'));
+const actuatorsProto = grpc.loadPackageDefinition(protoObject);
+
+const AC = {
+  active: false,
+  temperature: 29.0,
+};
+
 const server = new grpc.Server();
 
-server.addService(notesProto.NoteService.service, {
-  list: (_, callback) => {
-    callback(null, notes);
+server.addService(actuatorsProto.ActuatorService.service, {
+  controlAC: (request, callback) => {
+    try {
+      AC.active = true;
+      AC.temperature = request.temperature;
+    } catch (e) {
+      callback(null, { success: false, error_message: e });
+    }
+
+    const response = {
+      success: true,
+      error_message: "",
+    };
+
+    callback(null, response);
   },
 });
 server.bind("127.0.0.1:50051", grpc.ServerCredentials.createInsecure());

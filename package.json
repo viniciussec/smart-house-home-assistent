@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@grpc/proto-loader": "^0.6.9",
     "amqplib": "^0.8.0",
-    "grpc": "^1.24.11"
+    "grpc": "^1.24.11",
+    "path": "^0.12.7"
   }
 }
