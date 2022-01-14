@@ -7,18 +7,16 @@ const protoObject = protoLoader.loadSync(
 );
 const actuatorsProto = grpc.loadPackageDefinition(protoObject);
 
-const AC = {
+const Sprinkler = {
   active: false,
-  temperature: 29.0,
 };
 
 const server = new grpc.Server();
 
 server.addService(actuatorsProto.ActuatorService.service, {
-  controlAC: (request, callback) => {
+  controlSprinkler: (request, callback) => {
     try {
-      AC.active = request.request.active;
-      AC.temperature = request.request.temperature;
+      Sprinkler.active = request.request.active;
     } catch (e) {
       callback(null, { success: false, error_message: e });
     }
@@ -29,7 +27,7 @@ server.addService(actuatorsProto.ActuatorService.service, {
     };
 
     console.log(
-      "Temperatura ajustada para " + AC.temperature + " graus Celsius"
+      "Sprinker " + (Sprinkler.active ? 'ligado' : 'desligado')
     );
 
     callback(null, response);
