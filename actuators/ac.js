@@ -1,6 +1,7 @@
 const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
+const fs = require("fs");
 
 const protoObject = protoLoader.loadSync(
   path.resolve(__dirname, "./actuators.proto")
@@ -19,6 +20,10 @@ server.addService(actuatorsProto.ActuatorService.service, {
     try {
       AC.active = request.request.active;
       AC.temperature = request.request.temperature;
+
+      let content = JSON.parse(fs.readFileSync("../ambient.json", "utf8"));
+      content.temperature = request.request.temperature;
+      fs.writeFileSync("../ambient.json", JSON.stringify(content));
     } catch (e) {
       callback(null, { success: false, error_message: e });
     }

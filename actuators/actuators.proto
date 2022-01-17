@@ -2,7 +2,7 @@ syntax = "proto3";
 
 service ActuatorService {
     rpc controlAC (RequestAC) returns (Response) {}
-    rpc controlLightbulb (RequestLightBulb) returns (Response) {}
+    rpc controlLightBulb (RequestLightBulb) returns (Response) {}
     rpc controlSprinkler (RequestSprinkler) returns (Response) {}
 }
 

@@ -7,16 +7,16 @@ const protoObject = protoLoader.loadSync(
 );
 const actuatorsProto = grpc.loadPackageDefinition(protoObject);
 
-const Sprinkler = {
+const LightBulb = {
   active: false,
 };
 
 const server = new grpc.Server();
 
 server.addService(actuatorsProto.ActuatorService.service, {
-  controlSprinkler: (request, callback) => {
+  controlLightBulb: (request, callback) => {
     try {
-      Sprinkler.active = request.request.active;
+      LightBulb.active = request.request.active;
     } catch (e) {
       callback(null, { success: false, error_message: e });
     }
@@ -26,13 +26,11 @@ server.addService(actuatorsProto.ActuatorService.service, {
       error_message: "",
     };
 
-    console.log(
-      "Sprinker " + (Sprinkler.active ? 'ligado' : 'desligado')
-    );
+    console.log("Lâmpada " + (LightBulb.active ? "ligada" : "desligada"));
 
     callback(null, response);
   },
 });
-server.bind("127.0.0.1:50053", grpc.ServerCredentials.createInsecure());
-console.log("Server running at http://127.0.0.1:50053");
+server.bind("127.0.0.1:50052", grpc.ServerCredentials.createInsecure());
+console.log("Server running at http://127.0.0.1:50052");
 server.start();
