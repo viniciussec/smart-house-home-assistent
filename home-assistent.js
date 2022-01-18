@@ -10,32 +10,32 @@ const protoObject = protoLoader.loadSync(
 );
 const actuatorsProto = grpc.loadPackageDefinition(protoObject);
 
-const clientAC = new actuatorsProto.ActuatorService(
-  "localhost:50051",
-  grpc.credentials.createInsecure()
-);
+// const clientAC = new actuatorsProto.ActuatorService(
+//   "localhost:50051",
+//   grpc.credentials.createInsecure()
+// );
 
 // const clientLightBulb = new actuatorsProto.ActuatorService(
 //   "localhost:50052",
 //   grpc.credentials.createInsecure()
 // );
 
-// const clientSprinkler = new actuatorsProto.ActuatorService(
-//   "localhost:50053",
-//   grpc.credentials.createInsecure()
-// );
-
-clientAC.controlAC(  
-  {
-    type: "AC",
-    id: 1,
-    temperature: 27.0,
-    active: false,
-  },
-  (err, res) => {
-    console.log(res.success);
-  }
+const clientSprinkler = new actuatorsProto.ActuatorService(
+  "localhost:50053",
+  grpc.credentials.createInsecure()
 );
+
+// clientAC.controlAC(  
+//   {
+//     type: "AC",
+//     id: 1,
+//     temperature: 27.0,
+//     active: false,
+//   },
+//   (err, res) => {
+//     console.log(res.success);
+//   }
+// );
 
 // clientLightBulb.controlLightBulb(
 //   {
@@ -48,16 +48,16 @@ clientAC.controlAC(
 //   }
 // );
 
-// clientSprinkler.controlSprinkler(
-//   {
-//     type: "Sprinkler",
-//     id: 3,
-//     active: false,
-//   },
-//   (err, res) => {
-//     console.log(res.success);
-//   }
-// );
+clientSprinkler.controlSprinkler(
+  {
+    type: "Sprinkler",
+    id: 3,
+    active: true,
+  },
+  (err, res) => {
+    console.log(res.success);
+  }
+);
 
 
 

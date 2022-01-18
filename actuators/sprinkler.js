@@ -1,6 +1,7 @@
 const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
+const fs = require("fs");
 
 const protoObject = protoLoader.loadSync(
   path.resolve(__dirname, "./actuators.proto")
@@ -16,7 +17,13 @@ const server = new grpc.Server();
 server.addService(actuatorsProto.ActuatorService.service, {
   controlSprinkler: (request, callback) => {
     try {
+      let content = JSON.parse(fs.readFileSync("../ambient.json", "utf8"));
+      if(content.smoke === true && request.request.active) content.smoke = false;
+      else content.smoke = request.request.active;
+
       Sprinkler.active = request.request.active;
+      fs.writeFileSync("../ambient.json", JSON.stringify(content));
+
     } catch (e) {
       callback(null, { success: false, error_message: e });
     }
