@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Assistent</title>
+    <style>
+      body {
+        background-color: rgb(111, 202, 245);
+        padding: 10px;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .equipment-container {
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        height: 100px;
+        background-color: white;
+      }
+      .sensor-visor {
+        padding: 15px 25px;
+        background-color: cadetblue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+        border: 2px black solid;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>HOME ASSISTENT</h1>
+    <div class="grid-container">
+      <div class="equipment-container">
+        TEMPERATURA
+        <div class="sensor-visor">25ºC</div>
+      </div>
+      <div class="equipment-container">
+        FUMAÇA
+        <div class="sensor-visor">NÃO</div>
+      </div>
+      <div class="equipment-container">
+        LUZ
+        <div class="sensor-visor">ATIVA</div>
+      </div>
+      <div class="equipment-container">
+        AR CONDICIONADO
+        <div class="sensor-visor">25ºC</div>
+      </div>
+      <div class="equipment-container">
+        SPRINKLER
+        <button>ON</button>
+      </div>
+      <div class="equipment-container">
+        LÂMPADA
+        <button>OFF</button>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+      const socket = io();
+      socket.on("test", (data) => {
+        console.log(data);
+      });
+    </script>
+  </body>
+</html>
