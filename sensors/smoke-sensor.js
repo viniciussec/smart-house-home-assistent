@@ -25,7 +25,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       });
       const defaultValue = JSON.parse(file).smoke;
 
-      let msg = defaultValue ? "Tem fumaça" : "Não tem fumaça";
+      let msg = defaultValue ? 'true' : 'false';
 
       channel.sendToQueue(queue, Buffer.from(msg));
       console.log(" [x] Enviado: %s", msg);

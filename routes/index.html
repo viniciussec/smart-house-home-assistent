@@ -41,15 +41,15 @@
     <div class="grid-container">
       <div class="equipment-container">
         TEMPERATURA
-        <div class="sensor-visor">25ºC</div>
+        <div class="sensor-visor" id="temperature">-- ºC</div>
       </div>
       <div class="equipment-container">
         FUMAÇA
-        <div class="sensor-visor">NÃO</div>
+        <div class="sensor-visor" id="smoke">--</div>
       </div>
       <div class="equipment-container">
         LUZ
-        <div class="sensor-visor">ATIVA</div>
+        <div class="sensor-visor" id="luminosity">--</div>
       </div>
       <div class="equipment-container">
         AR CONDICIONADO
@@ -70,6 +70,18 @@
       const socket = io();
       socket.on("test", (data) => {
         console.log(data);
+      });
+      socket.on("temperature-sensor", (data) => {
+        // console.log("Temperature ", data);
+        $("#temperature").text(data + " ºC");
+      });
+      socket.on("luminosity-sensor", (data) => {
+        // console.log("Luminosity ", data);
+        $("#luminosity").text(data === 'true' ? 'ATIVA' : 'NÃO ATIVA');
+      });
+      socket.on("smoke-sensor", (data) => {
+        // console.log("Smoke ", data);
+        $("#smoke").text(data === 'true' ? 'SIM' : 'NÃO');
       });
     </script>
   </body>
