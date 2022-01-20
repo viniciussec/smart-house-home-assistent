@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Assistent</title>
     <style>
+      * {
+        font-family: monospace;
+      }
       body {
         background-color: rgb(111, 202, 245);
         padding: 10px;
+      }
+      p {
+        margin: 8px 0px;
+        padding: 0;
+        font-size: 16px;
       }
       .grid-container {
         display: grid;
@@ -21,7 +29,7 @@
         flex-direction: column;
         align-items: center;
         border-radius: 10px;
-        height: 100px;
+        height: 120px;
         background-color: white;
       }
       .sensor-visor {
@@ -46,6 +54,18 @@
         display: flex;
         flex-direction: column;
       }
+
+      .button-on-off {
+        padding: 15px;
+        border-radius: 50%;
+        background-color: rgba(202, 7, 7, 0.822);
+        color: white;
+      }
+
+      .rotate-180 {
+        transform: rotate(180deg);
+      }
+
     </style>
   </head>
   <body>
@@ -53,27 +73,30 @@
     <h2>Sensores</h2>
     <div class="grid-container">
       <div class="equipment-container">
-        TEMPERATURA
+        <p>TEMPERATURA</p>
+        
         <div class="sensor-visor" id="temperature">-- ºC</div>
       </div>
       <div class="equipment-container">
-        FUMAÇA
+        <p>FUMAÇA</p>
+        
         <div class="sensor-visor" id="smoke">--</div>
       </div>
       <div class="equipment-container">
-        LUZ
+         <p>LUZ</p>
         <div class="sensor-visor" id="luminosity">--</div>
       </div>
       <h2>Atuadores</h2>
       <div></div>
       <div></div>
       <div class="equipment-container">
-        AR CONDICIONADO
+        <p>AR CONDICIONADO</p>
+        
         <div class="flex-row">
           <div id="ac" class="sensor-visor" style="color: #666">17 ºC</div>
           <div class="button-container">
-            <button onclick="acIncrease()" id="ac_increase" style="margin: 5px">
-              ^
+            <button class="rotate-180" onclick="acIncrease()" id="ac_increase" style="margin: 5px">
+              v
             </button>
             <button onclick="acDecrease()" id="ac-decrease" style="margin: 5px">
               v
@@ -82,12 +105,14 @@
         </div>
       </div>
       <div class="equipment-container">
-        SPRINKLER
-        <button id="sprinkler" onclick="toggleSprinkler()">ON</button>
+        <p>SPRINKLER</p>
+        
+        <button class="button-on-off" id="sprinkler" onclick="toggleSprinkler()">ON</button>
       </div>
       <div class="equipment-container">
-        LÂMPADA
-        <button id="lightbulb" onclick="toggleLightbulb()">ON</button>
+        <p>LÂMPADA</p>
+        
+        <button class="button-on-off" id="lightbulb" onclick="toggleLightbulb()">ON</button>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -137,9 +162,11 @@
         const currentValue = $("#lightbulb").text();
         if (currentValue === "OFF") {
           $("#lightbulb").text("ON");
+          $("#lightbulb").css("background-color", 'rgba(202, 7, 7, 0.822)');
           socket.emit("lightbulb", false);
         } else {
           $("#lightbulb").text("OFF");
+          $("#lightbulb").css("background-color", 'green');
           socket.emit("lightbulb", true);
         }
       }
@@ -148,9 +175,11 @@
         const currentValue = $("#sprinkler").text();
         if (currentValue === "OFF") {
           $("#sprinkler").text("ON");
+          $("#sprinkler").css("background-color", 'rgba(202, 7, 7, 0.822)');
           socket.emit("sprinkler", false);
         } else {
           $("#sprinkler").text("OFF");
+          $("#sprinkler").css("background-color", 'green');
           socket.emit("sprinkler", true);
         }
       }
