@@ -41,40 +41,6 @@ const clientSprinkler = new actuatorsProto.ActuatorService(
 io.on("connection", (socket) => {
   console.log("New client connected");
 
-  // clientAC.controlAC(
-  //   {
-  //     type: "AC",
-  //     id: 1,
-  //     temperature: 27.0,
-  //     active: false,
-  //   },
-  //   (err, res) => {
-  //     console.log(res.success);
-  //   }
-  // );
-
-  // clientLightBulb.controlLightBulb(
-  //   {
-  //     type: "LightBulb",
-  //     id: 2,
-  //     active: true,
-  //   },
-  //   (err, res) => {
-  //     console.log(res.success);
-  //   }
-  // );
-
-  // clientSprinkler.controlSprinkler(
-  //   {
-  //     type: "Sprinkler",
-  //     id: 3,
-  //     active: true,
-  //   },
-  //   (err, res) => {
-  //     console.log(res.success);
-  //   }
-  // );
-
   amqp.connect("amqp://localhost", function (error0, connection) {
     if (error0) {
       throw error0;
@@ -140,11 +106,51 @@ io.on("connection", (socket) => {
 
   socket.emit("test", "Hello world");
 
+  socket.on("ac", (data) => {
+    console.log(data);
+    clientAC.controlAC(
+      {
+        type: "AC",
+        id: 1,
+        temperature: data,
+        active: true,
+      },
+      (err, res) => {
+        console.log(res.success);
+      }
+    );
+  });
+
+  socket.on("sprinkler", (data) => {
+    console.log(data);
+    clientSprinkler.controlSprinkler(
+      {
+        type: "Sprinkler",
+        id: 3,
+        active: data,
+      },
+      (err, res) => {
+        console.log(res.success);
+      }
+    );
+  });
+
+  socket.on("lightbulb", (data) => {
+    clientLightBulb.controlLightBulb(
+      {
+        type: "LightBulb",
+        id: 2,
+        active: data,
+      },
+      (err, res) => {
+        console.log(res.success);
+      }
+    );
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
 });
-
-io.on("actuator", (socket) => {});
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

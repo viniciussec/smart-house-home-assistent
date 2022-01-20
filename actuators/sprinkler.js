@@ -18,8 +18,8 @@ server.addService(actuatorsProto.ActuatorService.service, {
   controlSprinkler: (request, callback) => {
     try {
       let content = JSON.parse(fs.readFileSync("../ambient.json", "utf8"));
-      if(content.smoke === true && request.request.active) content.smoke = false;
-      else content.smoke = request.request.active;
+      if(content.smoke === true && request.request.active === true) content.smoke = false;
+      // else content.smoke = request.request.active;
 
       Sprinkler.active = request.request.active;
       fs.writeFileSync("../ambient.json", JSON.stringify(content));

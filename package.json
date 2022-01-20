@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node home-assistent.js",
+    "start": "node home-assistent.js && node ./sensors/luminosity-sensor && node ./lightbulb.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

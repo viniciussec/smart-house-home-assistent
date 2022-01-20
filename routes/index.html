@@ -34,10 +34,23 @@
         border: 2px black solid;
         margin-top: 10px;
       }
+
+      .flex-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button-container {
+        margin-left: 5px;
+        display: flex;
+        flex-direction: column;
+      }
     </style>
   </head>
   <body>
     <h1>HOME ASSISTENT</h1>
+    <h2>Sensores</h2>
     <div class="grid-container">
       <div class="equipment-container">
         TEMPERATURA
@@ -51,17 +64,30 @@
         LUZ
         <div class="sensor-visor" id="luminosity">--</div>
       </div>
+      <h2>Atuadores</h2>
+      <div></div>
+      <div></div>
       <div class="equipment-container">
         AR CONDICIONADO
-        <div class="sensor-visor">25ºC</div>
+        <div class="flex-row">
+          <div id="ac" class="sensor-visor" style="color: #666">17 ºC</div>
+          <div class="button-container">
+            <button onclick="acIncrease()" id="ac_increase" style="margin: 5px">
+              ^
+            </button>
+            <button onclick="acDecrease()" id="ac-decrease" style="margin: 5px">
+              v
+            </button>
+          </div>
+        </div>
       </div>
       <div class="equipment-container">
         SPRINKLER
-        <button>ON</button>
+        <button id="sprinkler" onclick="toggleSprinkler()">ON</button>
       </div>
       <div class="equipment-container">
         LÂMPADA
-        <button>OFF</button>
+        <button id="lightbulb" onclick="toggleLightbulb()">ON</button>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -77,12 +103,57 @@
       });
       socket.on("luminosity-sensor", (data) => {
         // console.log("Luminosity ", data);
-        $("#luminosity").text(data === 'true' ? 'ATIVA' : 'NÃO ATIVA');
+        $("#luminosity").text(data === "true" ? "ATIVA" : "NÃO ATIVA");
       });
       socket.on("smoke-sensor", (data) => {
         // console.log("Smoke ", data);
-        $("#smoke").text(data === 'true' ? 'SIM' : 'NÃO');
+        $("#smoke").text(data === "true" ? "SIM" : "NÃO");
       });
+
+      function controlAC(temperature) {
+        const value = $("#ac").text;
+        socket.emit("ac", value);
+      }
+
+      function acIncrease() {
+        if (parseInt($("#ac").text().substring(0, 2)) > 25);
+        else {
+          $("#ac").text(parseInt($("#ac").text().substring(0, 2)) + 1 + " ºC");
+          $("#ac").css("color", "black");
+          socket.emit("ac", $("#ac").text().substring(0, 2));
+        }
+      }
+
+      function acDecrease() {
+        if (parseInt($("#ac").text().substring(0, 2)) < 18);
+        else {
+          $("#ac").text(parseInt($("#ac").text().substring(0, 2)) - 1 + " ºC");
+          $("#ac").css("color", "black");
+          socket.emit("ac", $("#ac").text().substring(0, 2));
+        }
+      }
+
+      function toggleLightbulb() {
+        const currentValue = $("#lightbulb").text();
+        if (currentValue === "OFF") {
+          $("#lightbulb").text("ON");
+          socket.emit("lightbulb", false);
+        } else {
+          $("#lightbulb").text("OFF");
+          socket.emit("lightbulb", true);
+        }
+      }
+
+      function toggleSprinkler() {
+        const currentValue = $("#sprinkler").text();
+        if (currentValue === "OFF") {
+          $("#sprinkler").text("ON");
+          socket.emit("sprinkler", false);
+        } else {
+          $("#sprinkler").text("OFF");
+          socket.emit("sprinkler", true);
+        }
+      }
     </script>
   </body>
 </html>
