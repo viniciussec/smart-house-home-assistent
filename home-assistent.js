@@ -61,11 +61,12 @@ io.on("connection", (socket) => {
       channel.consume(
         queue,
         function (msg) {
+          const temperature = JSON.parse(msg.content.toString()).temperature;
           console.log(
             "[temp-sens] A temperatura é de %s graus Celsius",
-            msg.content.toString()
+            temperature
           );
-          socket.emit("temperature-sensor", msg.content.toString());
+          socket.emit("temperature-sensor", temperature);
         },
         {
           noAck: true,
@@ -79,8 +80,9 @@ io.on("connection", (socket) => {
       channel.consume(
         queue2,
         function (msg) {
-          console.log("[smoke] %s", msg.content.toString());
-          socket.emit("smoke-sensor", msg.content.toString());
+          const isSmoke = JSON.parse(msg.content.toString()).isSmoke;
+          console.log("[smoke] %s", isSmoke);
+          socket.emit("smoke-sensor", isSmoke);
         },
         {
           noAck: true,
@@ -94,8 +96,9 @@ io.on("connection", (socket) => {
       channel.consume(
         queue3,
         function (msg) {
-          console.log("[luminosity] %s", msg.content.toString());
-          socket.emit("luminosity-sensor", msg.content.toString());
+          const isLightOn = JSON.parse(msg.content.toString()).isLightOn;
+          console.log("[luminosity] %s", isLightOn);
+          socket.emit("luminosity-sensor", isLightOn);
         },
         {
           noAck: true,

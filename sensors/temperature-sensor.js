@@ -24,9 +24,14 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         flag: "r",
       });
       const defaultValue = JSON.parse(file).temperature;
-      let msg = `${defaultValue + Math.random()}`.substring(0, 5);
-      channel.sendToQueue(queue, Buffer.from(msg));
-      console.log(" [x] Enviado: %s", msg);
+
+      const msgObj = {
+        type: "luminosity-sensor",
+        temperature: `${defaultValue + Math.random()}`.substring(0, 5),
+      };
+
+      channel.sendToQueue(queue, Buffer.from(JSON.stringify(msgObj)));
+      console.log(" [x] Enviado: %s", msgObj);
     }, 3000);
   });
 });

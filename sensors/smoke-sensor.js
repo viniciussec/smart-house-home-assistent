@@ -25,10 +25,13 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       });
       const defaultValue = JSON.parse(file).smoke;
 
-      let msg = defaultValue ? 'true' : 'false';
+      const msgObj = {
+        type: "luminosity-sensor",
+        isSmoke: defaultValue,
+      };
 
-      channel.sendToQueue(queue, Buffer.from(msg));
-      console.log(" [x] Enviado: %s", msg);
+      channel.sendToQueue(queue, Buffer.from(JSON.stringify(msgObj)));
+      console.log(" [x] Enviado: %s", msgObj);
     }, 5000);
   });
 });

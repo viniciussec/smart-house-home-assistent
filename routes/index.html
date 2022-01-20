@@ -128,11 +128,11 @@
       });
       socket.on("luminosity-sensor", (data) => {
         // console.log("Luminosity ", data);
-        $("#luminosity").text(data === "true" ? "ATIVA" : "NÃO ATIVA");
+        $("#luminosity").text(data ? "ATIVA" : "NÃO ATIVA");
       });
       socket.on("smoke-sensor", (data) => {
-        // console.log("Smoke ", data);
-        $("#smoke").text(data === "true" ? "SIM" : "NÃO");
+        console.log("Smoke ", data);
+        $("#smoke").text(data ? "SIM" : "NÃO");
       });
 
       function controlAC(temperature) {
