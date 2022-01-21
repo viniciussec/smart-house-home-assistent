@@ -26,7 +26,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       const defaultValue = JSON.parse(file).smoke;
 
       const msgObj = {
-        type: "luminosity-sensor",
+        type: "smoke-sensor",
         isSmoke: defaultValue,
       };
 

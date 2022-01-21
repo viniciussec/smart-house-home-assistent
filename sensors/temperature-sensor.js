@@ -26,7 +26,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       const defaultValue = JSON.parse(file).temperature;
 
       const msgObj = {
-        type: "luminosity-sensor",
+        type: "temperature-sensor",
         temperature: `${defaultValue + Math.random()}`.substring(0, 5),
       };
 
